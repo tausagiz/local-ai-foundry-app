@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="LocalAIChat.Console/LocalAIChat.Console.csproj" />
+  <Project Path="LocalAIChat.Core/LocalAIChat.Core.csproj" />
+</Solution>
