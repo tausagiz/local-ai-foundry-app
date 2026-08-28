@@ -1,25 +1,26 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:LocalAIChat.UI.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="LocalAIChat.UI.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="LocalAIChat.UI">
+        Width="800"
+        Height="600"
+        Title="Local AI Chat">
 
-    <StackPanel Margin="24" Spacing="12">
-        <TextBox Text="{Binding ChatOutput}"
-                 AcceptsReturn="True"
-                 IsReadOnly="True"
-                 MinHeight="240" />
-        <TextBox Text="{Binding UserInput}"
-                 PlaceholderText="Wpisz wiadomość..."
-                 AcceptsReturn="True" />
-        <Button Content="Wyślij"
-                Command="{Binding SendCommand}"
-                HorizontalAlignment="Right" />
-    </StackPanel>
+    <Grid RowDefinitions="*,Auto" Margin="20">
+        <ScrollViewer Grid.Row="0">
+            <TextBlock Text="{Binding ChatOutput}"
+                       TextWrapping="Wrap" />
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    Spacing="10">
+            <TextBox Width="600"
+                     Text="{Binding UserInput, Mode=TwoWay}" />
+            <Button Content="Wyślij"
+                    Command="{Binding SendCommand}" />
+        </StackPanel>
+    </Grid>
 
 </Window>
