@@ -9,14 +9,17 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="LocalAIChat.UI">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
-    </Design.DataContext>
-
-    <TextBox Text="{Binding Greeting}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center" />
+    <StackPanel Margin="24" Spacing="12">
+        <TextBox Text="{Binding ChatOutput}"
+                 AcceptsReturn="True"
+                 IsReadOnly="True"
+                 MinHeight="240" />
+        <TextBox Text="{Binding UserInput}"
+                 PlaceholderText="Wpisz wiadomość..."
+                 AcceptsReturn="True" />
+        <Button Content="Wyślij"
+                Command="{Binding SendCommand}"
+                HorizontalAlignment="Right" />
+    </StackPanel>
 
 </Window>
