@@ -10,7 +10,7 @@ public class PromptManager : IPromptManager
         ["PL_Analytical"] = new PromptConfig
         {
             SystemPrompt = "Odpowiadaj po polsku, rzeczowo i analitycznie.",
-            ModelAlias = "chat-main"
+            ModelAlias = "phi-4"
         }
     };
 
