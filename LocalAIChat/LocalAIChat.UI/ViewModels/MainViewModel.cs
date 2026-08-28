@@ -57,8 +57,22 @@ public partial class MainViewModel : ViewModelBase
 
     public string[] ModeOptions { get; } = ["fast", "main", "deep", "smart", "search"];
 
+    public string CurrentProfileName => SelectedSession?.Session.ProfileName ?? "PL_Analytical";
+
+    public PromptConfig GetCurrentProfile()
+    {
+        return _promptManager.GetProfile(CurrentProfileName);
+    }
+
+    public void SaveCurrentProfile(PromptConfig profile)
+    {
+        _promptManager.SaveProfile(CurrentProfileName, profile);
+        ContextInspector.Refresh(SelectedSession?.Session, profile.SystemPrompt);
+    }
+
     partial void OnSelectedSessionChanged(SessionItemViewModel? value)
     {
+        OnPropertyChanged(nameof(CurrentProfileName));
         ChatOutput = value?.ChatOutput ?? string.Empty;
         ContextInspector.Refresh(
             value?.Session,
