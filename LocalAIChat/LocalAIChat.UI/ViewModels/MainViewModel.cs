@@ -20,6 +20,24 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     private string chatOutput = string.Empty;
 
+    [ObservableProperty]
+    private string currentModel = "-";
+
+    [ObservableProperty]
+    private string currentMode = "-";
+
+    [ObservableProperty]
+    private int inputTokens;
+
+    [ObservableProperty]
+    private int outputTokens;
+
+    [ObservableProperty]
+    private long generationDurationMs;
+
+    [ObservableProperty]
+    private int contextMessageCount;
+
     public MainViewModel(IChatEngine engine)
     {
         _engine = engine;
@@ -33,6 +51,7 @@ public partial class MainViewModel : ViewModelBase
     partial void OnSelectedSessionChanged(SessionItemViewModel? value)
     {
         ChatOutput = value?.ChatOutput ?? string.Empty;
+        ResetStats();
     }
 
     private void OnSessionListPropertyChanged(object? sender, PropertyChangedEventArgs args)
@@ -66,6 +85,31 @@ public partial class MainViewModel : ViewModelBase
 
         SelectedSession.ChatOutput += $"\nTy: {input}\nAI: {result.Response}\n";
         ChatOutput = SelectedSession.ChatOutput;
+        CurrentModel = result.Stats.ModelAlias;
+        CurrentMode = GetModeLabel(result.Stats.Mode);
+        InputTokens = result.Stats.InputTokens;
+        OutputTokens = result.Stats.OutputTokens;
+        GenerationDurationMs = result.Stats.DurationMs;
+        ContextMessageCount = session.Messages.Count;
         UserInput = string.Empty;
+    }
+
+    private void ResetStats()
+    {
+        CurrentModel = "-";
+        CurrentMode = "-";
+        InputTokens = 0;
+        OutputTokens = 0;
+        GenerationDurationMs = 0;
+        ContextMessageCount = 0;
+    }
+
+    private static string GetModeLabel(ChatMode mode)
+    {
+        return mode switch
+        {
+            ChatMode.DeepReasoning => "deep",
+            _ => mode.ToString().ToLowerInvariant()
+        };
     }
 }

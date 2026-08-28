@@ -13,10 +13,10 @@ public class FoundryModelRunner : IFoundryModelRunner
     {
         var resolvedAlias = ResolveModelAlias(alias, request.Text);
         var start = DateTime.UtcNow;
+        var prompt = BuildPrompt(context, request);
 
         try
         {
-            var prompt = BuildPrompt(context, request);
             var responseText = await InvokeFoundryAsync(resolvedAlias, prompt);
             var durationMs = (long)(DateTime.UtcNow - start).TotalMilliseconds;
 
@@ -27,6 +27,7 @@ public class FoundryModelRunner : IFoundryModelRunner
                 {
                     ModelAlias = resolvedAlias,
                     Mode = ResolveMode(alias),
+                    InputTokens = EstimateTokens(prompt),
                     OutputTokens = EstimateTokens(responseText),
                     DurationMs = durationMs
                 }
@@ -42,6 +43,7 @@ public class FoundryModelRunner : IFoundryModelRunner
                 {
                     ModelAlias = resolvedAlias,
                     Mode = ResolveMode(alias),
+                    InputTokens = EstimateTokens(prompt),
                     DurationMs = durationMs
                 }
             };
