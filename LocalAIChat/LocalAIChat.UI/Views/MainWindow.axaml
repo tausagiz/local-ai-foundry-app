@@ -1,26 +1,40 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:LocalAIChat.UI.ViewModels"
+        xmlns:views="using:LocalAIChat.UI.Views"
         x:Class="LocalAIChat.UI.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Width="800"
         Height="600"
         Title="Local AI Chat">
 
-    <Grid RowDefinitions="*,Auto" Margin="20">
-        <ScrollViewer Grid.Row="0">
-            <TextBlock Text="{Binding ChatOutput}"
-                       TextWrapping="Wrap" />
-        </ScrollViewer>
+    <Grid ColumnDefinitions="240,*">
+        <Border Grid.Column="0"
+                Background="#F3F4F6"
+                BorderBrush="#D9DDE5"
+                BorderThickness="0,0,1,0"
+                Padding="12">
+            <views:SessionListView DataContext="{Binding SessionList}" />
+        </Border>
 
-        <StackPanel Grid.Row="1"
-                    Orientation="Horizontal"
-                    Spacing="10">
-            <TextBox Width="600"
+        <Grid Grid.Column="1"
+              RowDefinitions="*,Auto"
+              Margin="20">
+            <ScrollViewer Grid.Row="0">
+                <TextBlock Text="{Binding ChatOutput}"
+                           TextWrapping="Wrap" />
+            </ScrollViewer>
+
+                <Grid Grid.Row="1"
+                  ColumnDefinitions="*,Auto"
+                  ColumnSpacing="10">
+                <TextBox Grid.Column="0"
                      Text="{Binding UserInput, Mode=TwoWay}" />
-            <Button Content="Wyślij"
+                <Button Grid.Column="1"
+                    Content="Wyślij"
                     Command="{Binding SendCommand}" />
-        </StackPanel>
+                </Grid>
+        </Grid>
     </Grid>
 
 </Window>

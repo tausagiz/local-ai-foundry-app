@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:LocalAIChat.UI.ViewModels"
+             xmlns:views="using:LocalAIChat.UI.Views"
+             x:Class="LocalAIChat.UI.Views.SessionListView"
+             x:DataType="vm:SessionListViewModel">
+    <Grid RowDefinitions="Auto,*" RowSpacing="12">
+        <Button Grid.Row="0"
+                HorizontalAlignment="Stretch"
+                Content="+  Nowa sesja"
+                Command="{Binding CreateSessionCommand}" />
+
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding Sessions}"
+                 SelectedItem="{Binding SelectedSession, Mode=TwoWay}"
+                 BorderThickness="0">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:SessionItemViewModel">
+                    <views:SessionItemView />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>
