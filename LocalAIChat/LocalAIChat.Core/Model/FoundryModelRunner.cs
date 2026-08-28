@@ -75,6 +75,8 @@ public class FoundryModelRunner : IFoundryModelRunner
         {
             "chat-fast" => "phi-3.5-mini",
             "chat-main" => "phi-4",
+            "chat-deep" => "phi-4-reasoning",
+            "chat-search" => "phi-4",
             "chat-smart" => string.IsNullOrWhiteSpace(promptText) || promptText.Length <= 200 ? "phi-3.5-mini" : "phi-4",
             "phi-3.5-mini" or "phi-3.5-mini-instruct" => "phi-3.5-mini",
             "phi-4" or "phi-4-instruct" => "phi-4",
@@ -90,6 +92,8 @@ public class FoundryModelRunner : IFoundryModelRunner
             "chat-fast" => ChatMode.Fast,
             "chat-smart" => ChatMode.Smart,
             "chat-main" => ChatMode.Main,
+            "chat-deep" => ChatMode.DeepReasoning,
+            "chat-search" => ChatMode.SearchOnline,
             "phi-4-reasoning" or "phi-4-reasoning-instruct" or "deepreasoning" => ChatMode.DeepReasoning,
             _ => ChatMode.Main
         };

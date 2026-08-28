@@ -22,9 +22,9 @@ public class ModeSelector : IModeSelector
 
     public ChatMode SelectMode(ChatRequest request, ChatSession session)
     {
-        if (request.ForceMode is not null)
+        if (request.Mode is not null)
         {
-            return request.ForceMode.Value;
+            return request.Mode.Value;
         }
 
         return IsFactQuery(request)

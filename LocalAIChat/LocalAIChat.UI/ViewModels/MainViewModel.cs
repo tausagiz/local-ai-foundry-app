@@ -18,6 +18,9 @@ public partial class MainViewModel : ViewModelBase
     private string userInput = string.Empty;
 
     [ObservableProperty]
+    private string selectedMode = "smart";
+
+    [ObservableProperty]
     private string chatOutput = string.Empty;
 
     [ObservableProperty]
@@ -47,6 +50,8 @@ public partial class MainViewModel : ViewModelBase
     }
 
     public SessionListViewModel SessionList { get; }
+
+    public string[] ModeOptions { get; } = ["fast", "main", "deep", "smart", "search"];
 
     partial void OnSelectedSessionChanged(SessionItemViewModel? value)
     {
@@ -78,7 +83,7 @@ public partial class MainViewModel : ViewModelBase
         var request = new ChatRequest
         {
             Text = input,
-            ForceMode = ChatMode.Smart
+            Mode = ParseMode(SelectedMode)
         };
 
         var result = await _engine.SendMessageAsync(request, session);
@@ -110,6 +115,18 @@ public partial class MainViewModel : ViewModelBase
         {
             ChatMode.DeepReasoning => "deep",
             _ => mode.ToString().ToLowerInvariant()
+        };
+    }
+
+    private static ChatMode ParseMode(string mode)
+    {
+        return mode.ToLowerInvariant() switch
+        {
+            "fast" => ChatMode.Fast,
+            "main" => ChatMode.Main,
+            "deep" => ChatMode.DeepReasoning,
+            "search" => ChatMode.SearchOnline,
+            _ => ChatMode.Smart
         };
     }
 }

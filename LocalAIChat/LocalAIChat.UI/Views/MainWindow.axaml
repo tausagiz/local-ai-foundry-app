@@ -17,23 +17,28 @@
             <views:SessionListView DataContext="{Binding SessionList}" />
         </Border>
 
-        <Grid Grid.Column="1"
-              RowDefinitions="*,Auto"
-              Margin="20">
+                <Grid Grid.Column="1"
+                            RowDefinitions="*,Auto"
+                            Margin="20">
             <ScrollViewer Grid.Row="0">
                 <TextBlock Text="{Binding ChatOutput}"
                            TextWrapping="Wrap" />
             </ScrollViewer>
 
-                <Grid Grid.Row="1"
-                  ColumnDefinitions="*,Auto"
-                  ColumnSpacing="10">
-                <TextBox Grid.Column="0"
-                     Text="{Binding UserInput, Mode=TwoWay}" />
-                <Button Grid.Column="1"
-                    Content="Wyślij"
-                    Command="{Binding SendCommand}" />
+            <StackPanel Grid.Row="1" Spacing="6">
+                <ComboBox ItemsSource="{Binding ModeOptions}"
+                          SelectedItem="{Binding SelectedMode, Mode=TwoWay}"
+                          HorizontalAlignment="Left"
+                          MinWidth="120" />
+                <Grid ColumnDefinitions="*,Auto"
+                      ColumnSpacing="10">
+                    <TextBox Grid.Column="0"
+                             Text="{Binding UserInput, Mode=TwoWay}" />
+                    <Button Grid.Column="1"
+                            Content="Wyślij"
+                            Command="{Binding SendCommand}" />
                 </Grid>
+            </StackPanel>
         </Grid>
 
         <Border Grid.Column="2"

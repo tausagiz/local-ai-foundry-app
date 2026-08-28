@@ -54,6 +54,8 @@ public partial class App : Application
 
         services.AddSingleton<IChatModePlugin, FastModePlugin>();
         services.AddSingleton<IChatModePlugin, MainModePlugin>();
+        services.AddSingleton<IChatModePlugin, DeepModePlugin>();
+        services.AddSingleton<IChatModePlugin, SearchModePlugin>();
         services.AddSingleton<IChatModePlugin, SmartModePlugin>();
 
         services.AddSingleton<MainViewModel>();
