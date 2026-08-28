@@ -7,6 +7,19 @@ public class ModeSelector : IModeSelector
 {
     private const int ShortPromptMaxLength = 200;
 
+    private static readonly string[] FactQuestionPrefixes =
+    [
+        "co ",
+        "kto ",
+        "gdzie ",
+        "kiedy ",
+        "ile ",
+        "jaki ",
+        "jaka ",
+        "jakie ",
+        "czy "
+    ];
+
     public ChatMode SelectMode(ChatRequest request, ChatSession session)
     {
         if (request.ForceMode is not null)
@@ -14,8 +27,22 @@ public class ModeSelector : IModeSelector
             return request.ForceMode.Value;
         }
 
-        return request.Text.Length <= ShortPromptMaxLength
+        return IsFactQuery(request)
+            || IsLongAnalytical(request)
+            ? ChatMode.Smart
+            : request.Text.Length <= ShortPromptMaxLength
             ? ChatMode.Fast
             : ChatMode.Main;
+    }
+
+    public bool IsFactQuery(ChatRequest request)
+    {
+        var text = request.Text.TrimStart();
+        return FactQuestionPrefixes.Any(prefix => text.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+    }
+
+    public bool IsLongAnalytical(ChatRequest request)
+    {
+        return request.Text.Length > ShortPromptMaxLength;
     }
 }

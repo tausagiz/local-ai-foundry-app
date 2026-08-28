@@ -14,6 +14,7 @@ services.AddSingleton<IChatEngine, ChatEngine>();
 services.AddSingleton<IModeSelector, ModeSelector>();
 services.AddSingleton<IChatModePlugin, FastModePlugin>();
 services.AddSingleton<IChatModePlugin, MainModePlugin>();
+services.AddSingleton<IChatModePlugin, SmartModePlugin>();
 services.AddSingleton<IContextManager, ContextManager>();
 services.AddSingleton<IMemoryManager, MemoryManager>();
 services.AddSingleton<IStatsCollector, StatsCollector>();
