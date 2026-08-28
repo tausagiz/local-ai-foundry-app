@@ -10,6 +10,7 @@ namespace LocalAIChat.UI.ViewModels;
 public partial class MainViewModel : ViewModelBase
 {
     private readonly IChatEngine _engine;
+    private readonly IPromptManager _promptManager;
 
     [ObservableProperty]
     private SessionItemViewModel? selectedSession;
@@ -41,9 +42,10 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     private int contextMessageCount;
 
-    public MainViewModel(IChatEngine engine)
+    public MainViewModel(IChatEngine engine, IPromptManager promptManager)
     {
         _engine = engine;
+        _promptManager = promptManager;
         SessionList = new SessionListViewModel();
         SessionList.PropertyChanged += OnSessionListPropertyChanged;
         SelectedSession = SessionList.SelectedSession;
@@ -51,11 +53,16 @@ public partial class MainViewModel : ViewModelBase
 
     public SessionListViewModel SessionList { get; }
 
+    public ContextInspectorViewModel ContextInspector { get; } = new();
+
     public string[] ModeOptions { get; } = ["fast", "main", "deep", "smart", "search"];
 
     partial void OnSelectedSessionChanged(SessionItemViewModel? value)
     {
         ChatOutput = value?.ChatOutput ?? string.Empty;
+        ContextInspector.Refresh(
+            value?.Session,
+            value is null ? string.Empty : _promptManager.GetProfile(value.Session.ProfileName).SystemPrompt);
         ResetStats();
     }
 
@@ -86,6 +93,8 @@ public partial class MainViewModel : ViewModelBase
             Mode = ParseMode(SelectedMode)
         };
 
+        ContextInspector.RecordContext(session, request.Mode?.ToString() ?? "Smart");
+
         var result = await _engine.SendMessageAsync(request, session);
 
         SelectedSession.ChatOutput += $"\nTy: {input}\nAI: {result.Response}\n";
@@ -96,6 +105,9 @@ public partial class MainViewModel : ViewModelBase
         OutputTokens = result.Stats.OutputTokens;
         GenerationDurationMs = result.Stats.DurationMs;
         ContextMessageCount = session.Messages.Count;
+        ContextInspector.Refresh(
+            session,
+            _promptManager.GetProfile(session.ProfileName).SystemPrompt);
         UserInput = string.Empty;
     }
 
